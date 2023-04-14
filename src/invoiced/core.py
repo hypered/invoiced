@@ -9,11 +9,16 @@ from pyzbar.pyzbar import decode
 from segno import helpers
 import subprocess
 
+TEMPLATES = None
+def load_templates():
+    global TEMPLATES
+    if TEMPLATES is None:
+        TEMPLATES = read_templates('./templates/')
+    return TEMPLATES
 
 def extract_data_from_pdf(pdf_path):
-    templates = read_templates('./templates/')
+    templates = load_templates()
     result = extract_data(pdf_path, templates=templates)
-    print(result)
     return result
 
 def generate_qr_code_from_pdf(pdf_path, out_directory):

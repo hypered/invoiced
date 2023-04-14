@@ -38,7 +38,8 @@ def main():
     out_directory = "generated/local"
 
     if args.command == "extract":
-        core.extract_data_from_pdf(args.pdf_path)
+        s = core.extract_data_from_pdf(args.pdf_path)
+        print(s)
     elif args.command == "qrcode":
         core.generate_qr_code_from_pdf(args.pdf_path, out_directory)
     elif args.command == "decode":
