@@ -1,0 +1,21 @@
+issuer: TotalEnergies
+comment: |
+  Recognize invoices in French.
+keywords:
+  - Facture d'acompte
+  - 'TotalEnergies Power & Gas Belgium S.A./N.V.'
+  - 'Rue Saint-Laurent, 54'
+  - '4000 Liège/Luik'
+  - 'TVA/BTW: BE 0859 655 570'
+fields:
+  date: 'Date facture\s+(\d{2}/\d{2}/\d{4})'
+  amount: 'Total\s+du \d{2}/\d{2}/\d{4}\s+(\d+,\d+)€'
+  invoice_number: 'Référence facture\s+(E\d{2}/\d{4,})\s+'
+  iban: 'BNP Parisbas Fortis : IBAN\s+([A-Z]{2}\d{2}\s*\d{4}\s*\d{4}\s*\d{4})'
+  bic: 'BNP Parisbas Fortis : IBAN\s+[A-Z]{2}\d{2}\s*\d{4}\s*\d{4}\s*\d{4} - (GEBABEBB)'
+  reference: '\s+(\+ \+ \+ \d \d \d / \d \d \d \d / \d \d \d \d \d \+ \+ \+)'
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','
