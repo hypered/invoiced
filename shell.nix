@@ -5,6 +5,7 @@ in
     buildInputs = with pkgs; [
       python39
       python39Packages.jinja2
+      python39Packages.mmh3
       python39Packages.pillow
       python39Packages.pyzbar
       python39Packages.qrcode

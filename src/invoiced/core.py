@@ -1,6 +1,8 @@
+import binascii
 from invoice2data import extract_data
 from invoice2data.extract.loader import read_templates
 from jinja2 import Environment, FileSystemLoader
+import mmh3
 import os
 from PIL import Image
 from pyzbar.pyzbar import decode
@@ -68,6 +70,13 @@ def convert_pdf_to_png(pdf_path):
         )
     output = proc.stdout
     print('Image generated as output.png.')
+
+def generate_hash_from_invoice(pdf_path):
+    seed = 0
+    with open(pdf_path, 'rb') as f:
+        file_data = f.read()
+    byte_data = mmh3.hash_bytes(file_data, seed)
+    return binascii.hexlify(byte_data).decode('utf-8')
 
 def generate_html_from_invoice(pdf_path):
     result = extract_data_from_pdf(pdf_path)
