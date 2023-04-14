@@ -6,7 +6,7 @@ from warnings import simplefilter
 simplefilter(action='ignore', category=PytzUsageWarning)
 
 import argparse
-from .core import extract_data_from_pdf, generate_qr_code_from_pdf
+from . import core
 
 def main():
     parser = argparse.ArgumentParser(description="Play with invoices.")
@@ -18,12 +18,17 @@ def main():
     qrcode_parser = subparsers.add_parser("qrcode", help="Generate a QR code from a PDF file.")
     qrcode_parser.add_argument("pdf_path", help="Path to the PDF file.")
 
+    decode_parser = subparsers.add_parser("decode", help="Extract data from a QR code.")
+    decode_parser.add_argument("image_path", help="Path to the image file.")
+
     args = parser.parse_args()
 
     if args.command == "extract":
-        extract_data_from_pdf(args.pdf_path)
+        core.extract_data_from_pdf(args.pdf_path)
     elif args.command == "qrcode":
-        generate_qr_code_from_pdf(args.pdf_path)
+        core.generate_qr_code_from_pdf(args.pdf_path)
+    elif args.command == "decode":
+        core.display_qr_code_content(args.image_path)
     else:
         parser.print_help()
 
