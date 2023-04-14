@@ -7,6 +7,7 @@ simplefilter(action='ignore', category=PytzUsageWarning)
 
 import argparse
 from . import core
+from .server import start_server
 
 def main():
     parser = argparse.ArgumentParser(description="Play with invoices.")
@@ -30,21 +31,27 @@ def main():
     html_parser = subparsers.add_parser("html", help="Generate an HTML page for a given PDF.")
     html_parser.add_argument("pdf_path", help="Path to the PDF file.")
 
+    serve_parser = subparsers.add_parser("serve", help="Run an HTTP server.")
+
     args = parser.parse_args()
+
+    out_directory = "generated/local"
 
     if args.command == "extract":
         core.extract_data_from_pdf(args.pdf_path)
     elif args.command == "qrcode":
-        core.generate_qr_code_from_pdf(args.pdf_path)
+        core.generate_qr_code_from_pdf(args.pdf_path, out_directory)
     elif args.command == "decode":
         core.display_qr_code_content(args.image_path)
     elif args.command == "image":
-        core.convert_pdf_to_png(args.pdf_path)
+        core.convert_pdf_to_png(args.pdf_path, out_directory)
     elif args.command == "hash":
         s = core.generate_hash_from_invoice(args.pdf_path)
         print(s)
     elif args.command == "html":
-        core.generate_html_from_invoice(args.pdf_path)
+        core.generate_html_from_invoice(args.pdf_path, out_directory)
+    elif args.command == "serve":
+        start_server()
     else:
         parser.print_help()
 
