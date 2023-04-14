@@ -1,0 +1,17 @@
+issuer: Proximus SA
+comment: |
+  Recognize invoices in French.
+keywords:
+  - Facture
+  - Proximus SA de droit public
+  - Bd du Roi Albert II
+  - "27"
+  - B-1030 Bruxelles
+  - TVA BE 0202.239.951
+fields:
+  date: 'Date\s+(\d{1,2} [a-zé]{4,} \d{4})'
+  amount: 'Montant total à payer\s+€\s+(\d+,\d+)'
+  invoice_number: 'Numéro de facture\s+(\d{4,})\s+'
+options:
+  currency: EUR
+  decimal_separator: ','
