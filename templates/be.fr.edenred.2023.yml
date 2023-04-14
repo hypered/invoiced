@@ -1,0 +1,22 @@
+issuer: Edenred Belgium SA
+comment: |
+  Recognize an already paid invoice in French.
+keywords:
+  - FACTURE
+  - Edenred Belgium SA/NV
+  - Boulevard du Souverain
+  - 1160 Bruxelles
+  - TVA / BTW BE 0407 034 269
+  - 'Reste à payer\s+0,00 €'
+fields:
+  date: 'Date de facturation :\s+(\d{2}/\d{2}/\d{4})'
+  amount: 'Net à payer\s+(\d+,\d+) €'
+  invoice_number: 'N. facture :\s+(\d{4,})\s+'
+  paid:
+    parser: static
+    value: True
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','
