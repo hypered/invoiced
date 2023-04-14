@@ -24,6 +24,9 @@ def main():
     image_parser = subparsers.add_parser("image", help="Convert a PDF to a PNG.")
     image_parser.add_argument("pdf_path", help="Path to the PDF file.")
 
+    html_parser = subparsers.add_parser("html", help="Generate an HTML page for a given PDF.")
+    html_parser.add_argument("pdf_path", help="Path to the PDF file.")
+
     args = parser.parse_args()
 
     if args.command == "extract":
@@ -34,6 +37,8 @@ def main():
         core.display_qr_code_content(args.image_path)
     elif args.command == "image":
         core.convert_pdf_to_png(args.pdf_path)
+    elif args.command == "html":
+        core.generate_html_from_invoice(args.pdf_path)
     else:
         parser.print_help()
 

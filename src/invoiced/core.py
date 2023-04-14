@@ -1,18 +1,24 @@
 from invoice2data import extract_data
 from invoice2data.extract.loader import read_templates
+from jinja2 import Environment, FileSystemLoader
+import os
 from PIL import Image
 from pyzbar.pyzbar import decode
 from segno import helpers
 import subprocess
 
+
 def extract_data_from_pdf(pdf_path):
     templates = read_templates('./templates/')
     result = extract_data(pdf_path, templates=templates)
     print(result)
+    return result
 
 def generate_qr_code_from_pdf(pdf_path):
-    templates = read_templates('./templates/')
-    result = extract_data(pdf_path, templates=templates)
+    result = extract_data_from_pdf(pdf_path)
+    generate_qr_code_from_data(result)
+
+def generate_qr_code_from_data(result):
     if result.get('paid', False):
         print('Invoice is marked as paid.')
     else:
@@ -62,3 +68,27 @@ def convert_pdf_to_png(pdf_path):
         )
     output = proc.stdout
     print('Image generated as output.png.')
+
+def generate_html_from_invoice(pdf_path):
+    result = extract_data_from_pdf(pdf_path)
+    generate_qr_code_from_data(result)
+    convert_pdf_to_png(pdf_path)
+
+    template_path = 'jinja2/preview.tpl'
+    template_dir, template_file = os.path.split(template_path)
+    env = Environment(loader=FileSystemLoader(template_dir))
+    template = env.get_template(template_file)
+
+    content = {
+        "image_url": 'output.png',
+        "qr_code_url": 'qrcode.png',
+        "iban": result['iban'],
+        "amount": result['amount'],
+        "reference": result['reference'],
+    }
+
+    rendered_template = template.render(content)
+
+    output_path = 'output.html'
+    with open(output_path, "w") as output_file:
+        output_file.write(rendered_template)

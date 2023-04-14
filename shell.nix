@@ -4,6 +4,7 @@ in
   pkgs.runCommand "dummy" {
     buildInputs = with pkgs; [
       python39
+      python39Packages.jinja2
       python39Packages.pillow
       python39Packages.pyzbar
       python39Packages.qrcode
