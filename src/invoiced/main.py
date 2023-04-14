@@ -33,6 +33,9 @@ def main():
 
     serve_parser = subparsers.add_parser("serve", help="Run an HTTP server.")
 
+    check_parser = subparsers.add_parser("check", help="Try the extraction code on a directory.")
+    check_parser.add_argument("path", help="Path to the directory.")
+
     args = parser.parse_args()
 
     out_directory = "generated/local"
@@ -53,6 +56,8 @@ def main():
         core.generate_html_from_invoice(args.pdf_path, out_directory)
     elif args.command == "serve":
         start_server()
+    elif args.command == "check":
+        core.check_directory(args.path)
     else:
         parser.print_help()
 

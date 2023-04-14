@@ -1,4 +1,5 @@
 import binascii
+import fnmatch
 from invoice2data import extract_data
 from invoice2data.extract.loader import read_templates
 from jinja2 import Environment, FileSystemLoader
@@ -116,3 +117,15 @@ def generate_html_from_invoice(pdf_path, out_directory):
     with open(output_path, "w") as output_file:
         output_file.write(rendered_template)
     print(f'HTML page generated at {output_path}.')
+
+def check_directory(directory):
+    def f(file_path):
+        if not extract_data_from_pdf(file_path):
+            print(f"Can't extract data from {file_path}.")
+    process_pdfs(directory, f)
+
+def process_pdfs(directory, processing_function):
+    for root, _, filenames in os.walk(directory):
+        for filename in fnmatch.filter(filenames, '*.pdf'):
+            file_path = os.path.join(root, filename)
+            processing_function(file_path)
