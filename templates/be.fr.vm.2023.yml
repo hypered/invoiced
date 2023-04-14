@@ -1,0 +1,21 @@
+issuer: VM Expert-Comptable
+comment: |
+  Recognize invoices in French.
+keywords:
+  - Facture
+  - 'VM EXPERT-COMPTABLE CONSEIL FISCAL SRL'
+  - 'Rue de Jemeppe\(VEL\) 31'
+  - '5060 Sambreville'
+  - 'T.V.A.: BE 0658.937.826'
+fields:
+  date: 'Date:\s+(\d{2}/\d{2}/\d{4})'
+  amount: 'Total à payer :\s+(\d+,\d+)'
+  invoice_number: 'Facture N.\s+(\d+)'
+  iban: 'ING\s+(BE\d{2}\s*\d{4}\s*\d{4}\s*\d{4})'
+  bic: 'ING\s+BE\d{2}\s*\d{4}\s*\d{4}\s*\d{4} - (BBRUBEBB)'
+  reference: 'utiliser la communication structurée suivante :\s+(\+\+\+\d\d\d/\d\d\d\d/\d\d\d\d\d\+\+\+)'
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','
