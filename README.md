@@ -4,6 +4,15 @@ This is a repository to play around with some Python libraries to extract data
 from invoices (received as PDFs) and/or generate and read SEPA Credit Transfert
 QR codes.
 
+# Development
+
+We're using a Nix shell to bring the necessary dependencies (e.g. Python
+libraries or the `pdftotext` binary).
+
+```
+$ nix-shell
+```
+
 # Extracting data from PDFs
 
 We're using `invoice2data`.
@@ -45,3 +54,6 @@ Note: The amount is a `float`.
 `invoice2data` comes with some templates, but the Proximus one for instance
 didn't work on our example PDF. If we can somehow ensure the templates "work",
 we should upstream them.
+
+We're using the non-official `comment:` field to try to add some information to
+our templates.
