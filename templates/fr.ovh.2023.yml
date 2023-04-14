@@ -1,16 +1,20 @@
 issuer: OVH
 comment: |
-  Recognize invoices in French.
+  Recognize an already paid invoice in French.
 keywords:
   - Facture
   - OVH
   - "2 rue kellermann"
   - ROUBAIX
   - TVA FR22424761419
+  - 'La facture a été réglée.'
 fields:
   date: 'Date d.émission :\s+(\d{2}/\d{2}/\d{4})'
   amount: 'Total de la facture TTC\s+(\d+,\d+)\s+€\s+'
   invoice_number: 'Référence de la facture acquittée :\s+(FR\d{4,})\s+'
+  paid:
+    parser: static
+    value: True
 options:
   currency: EUR
   date_formats:

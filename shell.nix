@@ -30,5 +30,15 @@ in
           #pkgs.tesseract
         ];
       })
+      (python39.pkgs.buildPythonApplication rec {
+        pname = "segno";
+        version = "1.5.2";
+        src = python.pkgs.fetchPypi {
+          inherit pname version;
+          hash = "sha256-mDQkspbmIYnXD8c0YM2UbPVty+grm9oYwGb8GyQ3HNw=";
+        };
+        propagatedBuildInputs = with python39Packages; [
+        ];
+      })
     ];
   } ""

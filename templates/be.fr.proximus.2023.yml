@@ -12,6 +12,9 @@ fields:
   date: 'Date\s+(\d{1,2} [a-zé]{4,} \d{4})'
   amount: 'Montant total à payer\s+€\s+(\d+,\d+)'
   invoice_number: 'Numéro de facture\s+(\d{4,})\s+'
+  iban: 'Sur le compte:\s+([A-Z]{2}\d{2}\s*\d{4}\s*\d{4}\s*\d{4})'
+  bic: 'BIC : (GEBABEBB)'
+  reference: 'Avec la référence\s+:\s+(\+\+\+\d{3}/\d{4}/\d{5}\+\+\+)'
 options:
   currency: EUR
   decimal_separator: ','

@@ -2,6 +2,7 @@ from invoice2data import extract_data
 from invoice2data.extract.loader import read_templates
 from PIL import Image
 from pyzbar.pyzbar import decode
+from segno import helpers
 
 def extract_data_from_pdf(pdf_path):
     templates = read_templates('./templates/')
@@ -9,7 +10,18 @@ def extract_data_from_pdf(pdf_path):
     print(result)
 
 def generate_qr_code_from_pdf(pdf_path):
-    print("TODO")
+    templates = read_templates('./templates/')
+    result = extract_data(pdf_path, templates=templates)
+    if result.get('paid', False):
+        print('Invoice is marked as paid.')
+    else:
+        qrcode = helpers.make_epc_qr(name=result['issuer'],
+                                     iban=result['iban'],
+                                     bic=result['bic'],
+                                     amount=result['amount'],
+                                     reference=result['reference'])
+        qrcode.save('qrcode.png', scale=8)
+        print('QR code generated as qrcode.png.')
 
 def display_qr_code_content(file_path):
     img = Image.open(file_path)
