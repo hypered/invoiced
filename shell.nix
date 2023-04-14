@@ -40,5 +40,7 @@ in
         propagatedBuildInputs = with python39Packages; [
         ];
       })
+      pkgs.imagemagick
+      pkgs.ghostscript
     ];
   } ""

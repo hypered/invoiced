@@ -21,6 +21,9 @@ def main():
     decode_parser = subparsers.add_parser("decode", help="Extract data from a QR code.")
     decode_parser.add_argument("image_path", help="Path to the image file.")
 
+    image_parser = subparsers.add_parser("image", help="Convert a PDF to a PNG.")
+    image_parser.add_argument("pdf_path", help="Path to the PDF file.")
+
     args = parser.parse_args()
 
     if args.command == "extract":
@@ -29,6 +32,8 @@ def main():
         core.generate_qr_code_from_pdf(args.pdf_path)
     elif args.command == "decode":
         core.display_qr_code_content(args.image_path)
+    elif args.command == "image":
+        core.convert_pdf_to_png(args.pdf_path)
     else:
         parser.print_help()
 

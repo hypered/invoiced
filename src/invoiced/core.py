@@ -3,6 +3,7 @@ from invoice2data.extract.loader import read_templates
 from PIL import Image
 from pyzbar.pyzbar import decode
 from segno import helpers
+import subprocess
 
 def extract_data_from_pdf(pdf_path):
     templates = read_templates('./templates/')
@@ -35,3 +36,29 @@ def display_qr_code_content(file_path):
     else:
         print("No QR code found in the image.")
         return None
+
+def convert_pdf_to_png(pdf_path):
+    """
+    Convert the first page of a PDF to a PNG.
+    This is equivalent to
+        convert -quality 100 -density 200 -colorspace sRGB "some.pdf[0]" \
+            -flatten output.png
+    """
+    args = [
+        "convert",
+        "-quality", "100",
+        "-density", "200",
+        "-colorspace", "sRGB",
+        f"{pdf_path}[0]",
+        "-flatten",
+        "output.png",
+        ]
+    proc = subprocess.run(
+            args,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            check=True,
+        )
+    output = proc.stdout
+    print('Image generated as output.png.')
