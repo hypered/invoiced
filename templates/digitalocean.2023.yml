@@ -1,0 +1,28 @@
+issuer: DigitalOcean LLC
+comment: |
+  Recognize an automatically paid invoice in English.
+keywords:
+  - Final invoice
+  - DigitalOcean LLC
+  - '101 Avenue of the Americas'
+  - 'New York, NY 10013'
+  - 'VAT ID: EU528002224'
+  - 'If you have a credit card on file, it will be automatically charged within 24 hours'
+fields:
+  date:
+    parser: regex
+    regex: 'Date of issue:\s+([A-Za-z]+ \d+, \d{4})'
+    type: date
+  amount:
+    parser: regex
+    regex: 'Total due\s+\$(\d+\.\d+)'
+    type: float
+  invoice_number:
+    parser: regex
+    regex: 'Invoice number:\s+(\d+)'
+  template:
+    parser: static
+    value: digitalocean.2023.yml
+options:
+  currency: USD
+  decimal_separator: '.'
