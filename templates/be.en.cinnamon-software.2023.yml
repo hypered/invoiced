@@ -1,0 +1,32 @@
+issuer: Cinnamon Software
+comment: |
+  Recognize an invoice in English.
+keywords:
+  - INVOICE
+  - Cinnamon Software
+  - '0773.400.695'
+fields:
+  date:
+    parser: regex
+    regex: 'Date:\s+([A-Za-z]+ \d+, \d{4})'
+    type: date
+    group: first
+  amount:
+    parser: regex
+    regex: 'Total:\s+€([,\d]+\.\d+)'
+    type: float
+  invoice_number:
+    parser: regex
+    regex: '# ([A-Z]+\d+)'
+  iban:
+    parser: regex
+    regex: 'IBAN ([A-Z]{2}\d{2} \d{4} \d{4} \d{4})'
+  text:
+    parser: regex
+    regex: '# ([A-Z]+\d+)'
+  template:
+    parser: static
+    value: be.en.cinnamon-software.2023.yml
+options:
+  currency: EUR
+  decimal_separator: '.'
