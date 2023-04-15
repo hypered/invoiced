@@ -1,17 +1,24 @@
 # Invoiced
 
-This is a repository to play around with some Python libraries to extract data
-from invoices (received as PDFs) and/or generate and read SEPA Credit Transfert
-QR codes.
+This repository contains (mostly) Belgian-related templates to extract
+structured data from invoices given as (unstructured) PDF files. The templates
+are intended for the `invoice2data` open source Python library.
+
+It also contains some code around `invoice2data` to make it easier to create
+and test templates, and to show extracted data in a web page (including as a
+SEPA Credit Transfer QR code).
 
 # Development
 
 We're using a Nix shell to bring the necessary dependencies (e.g. Python
-libraries or the `pdftotext` binary).
+libraries or the `pdftotext` binary) during development:
 
 ```
 $ nix-shell
+$ invoice2data --help
 ```
+
+This provides for instance `invoice2data` and `pdftotext`.
 
 # Writing templates
 
