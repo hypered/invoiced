@@ -10,7 +10,7 @@ keywords:
 fields:
   amount: 'Montant total à payer\s+(\d+,\d+) €'
   iban: 'IBAN\s+:\s+([A-Z]{2}\d{2}\s*\d{4}\s*\d{4}\s*\d{4})'
-  bic: 'BIC - (GKCCBEBB)'
+  bic: 'BIC [-:] (GKCCBEBB)'
   reference: '\s+(\+\+\+\d\d\d/\d\d\d\d/\d\d\d\d\d\+\+\+)'
 tables:
   - start: Numéro du client\s+Votre code VOO\s+Numéro de facture\s+Date de facture\s+Période d'abonnement

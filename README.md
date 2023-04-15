@@ -13,6 +13,11 @@ libraries or the `pdftotext` binary).
 $ nix-shell
 ```
 
+# Writing templates
+
+When adding a new template, it is easier to use the `invoice2data` command-line
+tool in debug mode. See below. The `invoice2data` repository has a tutorial too.
+
 # Extracting data from PDFs
 
 We're using `invoice2data`.
