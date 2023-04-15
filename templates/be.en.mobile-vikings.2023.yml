@@ -1,0 +1,31 @@
+issuer: Mobile Vikings NV
+comment: |
+  Recognize an automatically paid invoice in English.
+keywords:
+  - Invoice
+  - Mobile Vikings NV
+  - 'Kempische steenweg 309 Bus 1'
+  - '3500 Hasselt'
+  - 'BE 0886.946.917'
+  - 'Upfront payment subscription'
+fields:
+  date:
+    parser: regex
+    regex: 'Date\s*:\s+(\d{2}/\d{2}/\d{4})'
+    type: date
+  amount:
+    parser: regex
+    regex: 'Total amount to pay\s+€ (\d+\,\d+)'
+    type: float
+    group: first
+  invoice_number:
+    parser: regex
+    regex: 'Document number\s*:\s+([A-Z]+\d+)'
+  template:
+    parser: static
+    value: be.en.mobile-vikings.2023.yml
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','
