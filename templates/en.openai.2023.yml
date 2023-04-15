@@ -1,0 +1,28 @@
+issuer: OpenAI, LLC
+comment: |
+  Recognize an invoice in English.
+keywords:
+  - Invoice
+  - OpenAI, LLC
+  - '548 Market Street'
+  - 'San Francisco, California 94104-5401'
+  - 'EU OSS VAT EU372041333'
+fields:
+  date:
+    parser: regex
+    regex: 'Date of issue\s+([A-Za-z]+ \d+, \d{4})'
+    type: date
+  amount:
+    parser: regex
+    regex: 'Amount due\s+\$(\d+\.\d+)'
+    type: float
+    group: first
+  invoice_number:
+    parser: regex
+    regex: 'Invoice number\s+([-A-Z0-9]+)'
+  template:
+    parser: static
+    value: en.openai.2023.yml
+options:
+  currency: USD
+  decimal_separator: '.'
