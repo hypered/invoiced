@@ -1,0 +1,27 @@
+issuer: Gandi SAS
+comment: |
+  Recognize a prepaid invoice in French.
+keywords:
+  - Facture
+  - Gandi SAS
+  - '63, 65 Boulevard Massena'
+  - '75013 Paris'
+  - 'Statut : payée'
+fields:
+  date:
+    parser: regex
+    regex: 'Date :\s+(\d{1,2} [a-zé]{4,} \d{4})'
+    type: date
+  amount:
+    parser: regex
+    regex: 'Total \(EUR\)\s+(\d+,\d+) €'
+    type: float
+  invoice_number:
+    parser: regex
+    regex: 'Facture n° (\d+)'
+  template:
+    parser: static
+    value: fr.gandi.2023.yml
+options:
+  currency: EUR
+  decimal_separator: ','
