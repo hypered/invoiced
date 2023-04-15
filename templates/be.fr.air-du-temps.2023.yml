@@ -1,0 +1,27 @@
+issuer: Air du temps
+comment: |
+  Recognize an invoice in French.
+keywords:
+  - FACTURE
+  - 'San & Carine Degeimbre'
+  - 'TVA N°479.191.084'
+fields:
+  amount:
+    parser: regex
+    regex: 'Total à payer\s+€ (\d+\,\d+)'
+    type: float
+  iban:
+    parser: regex
+    regex: 'ING (BE \d{2} \d{4} \d{4} \d{4})'
+  template:
+    parser: static
+    value: be.fr.air-du-temps.2023.yml
+tables:
+  - start: Facture N°\s+Date\s+N°TVA\s+Echéance
+    end: Description\s+Quantité\s+Prix unit.\s+Montant\s+Code TVA
+    body: (?P<invoice_number>\d+)\s+(?P<date>\d+-\d+-\d{4})\s+
+options:
+  currency: EUR
+  date_formats:
+    - '%d-%m-%Y'
+  decimal_separator: ','
