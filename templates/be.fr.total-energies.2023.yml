@@ -1,6 +1,9 @@
 issuer: TotalEnergies
 comment: |
   Recognize invoices in French.
+  The IBAN and BIC were seen on an additional page on a specific invoice.
+  Normal invoices don't contain them (they are probably an image on which
+  customer data are written).
 keywords:
   - Facture d'acompte
   - 'TotalEner'
