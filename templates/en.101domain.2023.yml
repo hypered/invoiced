@@ -1,0 +1,26 @@
+issuer: 101domain GRS Limited
+comment: |
+  Recognize a prepaid invoice in English.
+keywords:
+  - Invoice
+  - 101domain GRS Limited
+  - 'Registered in Ireland 532923'
+  - 'VAT Number IE3225679CH'
+fields:
+  date:
+    parser: regex
+    regex: 'Date:\s+(\d+ [A-Za-z]+ \d{4})'
+    type: date
+  amount:
+    parser: regex
+    regex: 'Total\s+([,\d]+\.\d+) USD'
+    type: float
+  invoice_number:
+    parser: regex
+    regex: 'Invoice #:\s+([A-Z]+-[A-Z]+-\d+)'
+  template:
+    parser: static
+    value: en.101domain.2023.yml
+options:
+  currency: USD
+  decimal_separator: '.'
