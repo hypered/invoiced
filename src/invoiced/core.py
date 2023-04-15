@@ -9,6 +9,7 @@ from PIL import Image
 from pyzbar.pyzbar import decode
 from segno import helpers
 import subprocess
+import sys
 
 TEMPLATES = None
 def load_templates():
@@ -22,6 +23,14 @@ def extract_data_from_pdf(pdf_path):
     result = extract_data(pdf_path, templates=templates)
     return result
 
+def make_qrcode_from_data(result):
+    qrcode = helpers.make_epc_qr(name=result['issuer'],
+                                 iban=result['iban'],
+                                 bic=result['bic'],
+                                 amount=result['amount'],
+                                 reference=result['reference'])
+    return qrcode
+
 def generate_qr_code_from_pdf(pdf_path, out_directory):
     result = extract_data_from_pdf(pdf_path)
     generate_qr_code_from_data(result, out_directory)
@@ -32,11 +41,7 @@ def generate_qr_code_from_data(result, out_directory):
     else:
         os.makedirs(out_directory, exist_ok=True)
         output_path = os.path.join(out_directory, 'qrcode.png')
-        qrcode = helpers.make_epc_qr(name=result['issuer'],
-                                     iban=result['iban'],
-                                     bic=result['bic'],
-                                     amount=result['amount'],
-                                     reference=result['reference'])
+        qrcode = make_qrcode_from_data(result)
         qrcode.save(output_path, scale=8)
         print(f'QR code generated at {output_path}.')
 
@@ -93,6 +98,19 @@ def process_pdf(pdf_path, out_directory):
     generate_qr_code_from_data(result, out_directory)
     convert_pdf_to_png(pdf_path, out_directory)
     return result
+
+def escape_sequence_from_invoice(pdf_path):
+    result = extract_data_from_pdf(pdf_path)
+    qrcode = make_qrcode_from_data(result)
+    # Invert terminal colors. This is a crude way to get black on white output
+    # instead of white on black background.
+    sys.stdout.write("\033[;7m")
+    qrcode.terminal(compact=True)
+    # Reset terminal.
+    sys.stdout.write("\033[0;0m\n")
+    print(f"Amount: {result['amount']}")
+    print(f"IBAN: {result['iban']}")
+    print(f"Reference: {result['reference']}")
 
 def generate_html_from_invoice(pdf_path, out_directory):
     result = process_pdf(pdf_path, out_directory)

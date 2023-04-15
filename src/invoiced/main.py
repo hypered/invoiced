@@ -28,6 +28,9 @@ def main():
     hash_parser = subparsers.add_parser("hash", help="Generate a hash for a given PDF.")
     hash_parser.add_argument("pdf_path", help="Path to the PDF file.")
 
+    show_parser = subparsers.add_parser("show", help="Show data and qrcode.")
+    show_parser.add_argument("pdf_path", help="Path to the PDF file.")
+
     html_parser = subparsers.add_parser("html", help="Generate an HTML page for a given PDF.")
     html_parser.add_argument("pdf_path", help="Path to the PDF file.")
 
@@ -52,6 +55,8 @@ def main():
     elif args.command == "hash":
         s = core.generate_hash_from_invoice(args.pdf_path)
         print(s)
+    elif args.command == "show":
+        core.escape_sequence_from_invoice(args.pdf_path)
     elif args.command == "html":
         core.generate_html_from_invoice(args.pdf_path, out_directory)
     elif args.command == "serve":
