@@ -1,0 +1,35 @@
+issuer: Numtide Ltd
+comment: |
+  Recognize an invoice in English.
+keywords:
+  - INVOICE
+  - Numtide Ltd
+  - 'VAT: 249995826'
+fields:
+  date:
+    parser: regex
+    regex: '\s+(\d+ [A-Za-z]+ \d{4})'
+    type: date
+    group: first
+  amount:
+    parser: regex
+    regex: 'EUR Total\s+€([,\d]+\.\d+)'
+    type: float
+  invoice_number:
+    parser: regex
+    regex: 'INVOICE\s+(\d+)'
+  iban:
+    parser: regex
+    regex: 'IBAN: ([A-Z]{2}\d{2} \d{4} \d{4} \d{4})'
+  bic:
+    parser: regex
+    regex: 'BIC: (TRWIBEB1XXX)'
+  text:
+    parser: regex
+    regex: 'Payment Reference: (\d+)'
+  template:
+    parser: static
+    value: en.numtide.2023.yml
+options:
+  currency: EUR
+  decimal_separator: '.'
