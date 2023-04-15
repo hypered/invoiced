@@ -1,0 +1,35 @@
+issuer: Hypered SRL
+comment: |
+  Recognize an invoice in English.
+keywords:
+  - Invoice
+  - Hypered SRL
+  - 'VAT: BE652 849 986'
+fields:
+  date:
+    parser: regex
+    regex: 'Jambes, Belgium\s+([A-Za-z]+ \d+, \d{4})'
+    type: date
+  amount:
+    parser: regex
+    regex: 'Total, VAT incl.\s+€(\d+\.\d+)'
+    type: float
+    group: first
+  invoice_number:
+    parser: regex
+    regex: 'Invoice\s+(\d{4}-\d+)'
+  iban:
+    parser: regex
+    regex: 'IBAN:\s+([A-Z]{2}\d{2}\s*\d{4}\s*\d{4}\s*\d{4})'
+  bic:
+    parser: regex
+    regex: 'BIC : (BBRUBEBB)'
+  text:
+    parser: regex
+    regex: 'Invoice\s+(\d{4}-\d+)'
+  template:
+    parser: static
+    value: be.en.hypered.2022.yml
+options:
+  currency: EUR
+  decimal_separator: '.'
