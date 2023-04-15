@@ -120,6 +120,7 @@ def generate_html_from_invoice(pdf_path, out_directory):
 
 def check_directory(directory):
     def f(file_path):
+        print(f"Processing {file_path}...")
         if not extract_data_from_pdf(file_path):
             print(f"Can't extract data from {file_path}.")
     process_pdfs(directory, f)
