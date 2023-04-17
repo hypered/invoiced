@@ -45,5 +45,6 @@ in
       })
       pkgs.imagemagick
       pkgs.ghostscript
+      pkgs.sqlite
     ];
   } ""

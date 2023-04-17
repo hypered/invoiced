@@ -58,3 +58,11 @@ TODO Try Tesseract on (possibly scanned) PDFs.
   warning. Code exploiting the data should check for those cases.
 - We're using the non-official `comment:` field to try to add some information
   to our templates.
+
+# SQL
+
+```
+$ sqlite3 invoices.db < sql/create-invoices-table.sql
+$ sqlite3 invoices.db ".schema invoices"
+$ sqlite3 invoices.db "select * from invoices"
+```

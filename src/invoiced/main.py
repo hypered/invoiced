@@ -34,6 +34,12 @@ def main():
     html_parser = subparsers.add_parser("html", help="Generate an HTML page for a given PDF.")
     html_parser.add_argument("pdf_path", help="Path to the PDF file.")
 
+    insert_one_parser = subparsers.add_parser("insert-one", help="Insert a PDF invoice in database.")
+    insert_one_parser.add_argument("pdf_path", help="Path to the PDF file.")
+
+    insert_parser = subparsers.add_parser("insert", help="Insert PDFs found in a directory in a database.")
+    insert_parser.add_argument("path", help="Path to the directory.")
+
     serve_parser = subparsers.add_parser("serve", help="Run an HTTP server.")
 
     check_parser = subparsers.add_parser("check", help="Try the extraction code on a directory.")
@@ -59,6 +65,10 @@ def main():
         core.escape_sequence_from_invoice(args.pdf_path)
     elif args.command == "html":
         core.generate_html_from_invoice(args.pdf_path, out_directory)
+    elif args.command == "insert-one":
+        core.insert_invoice(args.pdf_path)
+    elif args.command == "insert":
+        core.insert_directory(args.path)
     elif args.command == "serve":
         start_server()
     elif args.command == "check":

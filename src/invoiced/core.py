@@ -11,6 +11,8 @@ from segno import helpers
 import subprocess
 import sys
 
+from . import db
+
 TEMPLATES = None
 def load_templates():
     global TEMPLATES
@@ -111,6 +113,26 @@ def escape_sequence_from_invoice(pdf_path):
     print(f"Amount: {result['amount']}")
     print(f"IBAN: {result['iban']}")
     print(f"Reference: {result['reference']}")
+
+def insert_invoice(pdf_path):
+    mmh3_hash = generate_hash_from_invoice(pdf_path)
+    if db.is_hash_present(mmh3_hash):
+        print(f"{pdf_path} is already present.")
+    else:
+        print(f"Inserting {pdf_path}...")
+        result = extract_data_from_pdf(pdf_path)
+        _, original_filename = os.path.split(pdf_path)
+        db.insert_invoice(
+            original_filename=original_filename,
+            mmh3_hash=mmh3_hash,
+            date=result['date'],
+            invoice_number=result['invoice_number'],
+            amount=result['amount'],
+            paid='no',
+            )
+
+def insert_directory(directory):
+    process_pdfs(directory, insert_invoice)
 
 def generate_html_from_invoice(pdf_path, out_directory):
     result = process_pdf(pdf_path, out_directory)
