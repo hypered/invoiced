@@ -66,3 +66,15 @@ $ sqlite3 invoices.db < sql/create-invoices-table.sql
 $ sqlite3 invoices.db ".schema invoices"
 $ sqlite3 invoices.db "select * from invoices"
 ```
+
+# Docker
+
+A Docker image running `invoiced serve` with Gunicorn is provided:
+
+```
+$ nix-build docker.nix
+$ docker load < result
+$ docker run -p 8000:8000 invoiced:xxxx
+```
+
+TODO It doesn't contain the Jinja2 or invoice2data templates yet.
