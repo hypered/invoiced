@@ -17,6 +17,9 @@
             max-height: 100%;
             object-fit: contain;
         }
+        .left object {
+            border: 2px solid #CCC;
+        }
         .right {
             flex: 1;
             max-width: 24em;
@@ -37,7 +40,9 @@
 <body>
     <div class="container">
         <div class="left">
-            <img src="{{ image_url }}" alt="Invoice preview">
+            <object data="{{ image_url }}" type="application/pdf" width="800em" height="500em">
+                <p>No browser support: <a href="{{ image_url }}">download the PDF</a>.</p>
+            </object>
         </div>
         <div class="right">
             <div class="data">

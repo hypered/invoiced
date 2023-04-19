@@ -27,7 +27,7 @@ def user_generated_directory():
 def process_file(pdf_path, out_directory):
     result = core.process_pdf(pdf_path, out_directory)
     content = {
-        "image_url": os.path.join('generated/per-session', 'output.png'),
+        "image_url": os.path.join('generated/per-session', 'input.pdf'),
         "qr_code_url": os.path.join('generated/per-session', 'qrcode.png'),
         "iban": result['iban'],
         "amount": result['amount'],
@@ -61,10 +61,11 @@ def upload_file():
             flash('Filename extension is not "pdf"')
             return redirect(request.url)
 
-        filename = secure_filename(file.filename)
-        pdf_path = os.path.join(app.config['UPLOAD_DIR'], filename)
-        file.save(pdf_path)
         out_directory = user_generated_directory()
+        os.makedirs(out_directory, exist_ok=True)
+        filename = secure_filename(file.filename)
+        pdf_path = os.path.join(out_directory, 'input.pdf')
+        file.save(pdf_path)
         return process_file(pdf_path, out_directory)
 
     else:

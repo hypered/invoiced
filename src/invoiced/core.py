@@ -13,7 +13,8 @@ import sys
 
 from . import db
 
-JINJA2_TEMPLATES_DIR = os.environ.get('JINJA2_TEMPLATES_DIR', './jinja2/')
+JINJA2_TEMPLATES_DIR = os.environ.get('JINJA2_TEMPLATES_DIR',
+    os.path.abspath('./jinja2/'))
 YAML_TEMPLATES_DIR = os.environ.get('YAML_TEMPLATES_DIR', './templates/')
 
 YAML_TEMPLATES = None
@@ -102,7 +103,6 @@ def generate_hash_from_invoice(pdf_path):
 def process_pdf(pdf_path, out_directory):
     result = extract_data_from_pdf(pdf_path)
     generate_qr_code_from_data(result, out_directory)
-    convert_pdf_to_png(pdf_path, out_directory)
     return result
 
 def escape_sequence_from_invoice(pdf_path):
@@ -147,7 +147,8 @@ def generate_html_from_invoice(pdf_path, out_directory):
     template = env.get_template(template_file)
 
     content = {
-        "image_url": 'output.png',
+        #"image_url": 'output.png',
+        "image_url": pdf_path,
         "qr_code_url": 'qrcode.png',
         "iban": result['iban'],
         "amount": result['amount'],
