@@ -77,4 +77,23 @@ $ docker load < result
 $ docker run -p 8000:8000 invoiced:xxxx
 ```
 
-TODO It doesn't contain the Jinja2 or invoice2data templates yet.
+Note: I didn't manage to get `convert` to run properly. The error when run
+within the container:
+
+```
+$ docker run -v$(pwd):/src invoiced:qqyikanwalr3y0x07aq936896zagjpi7 convert -quality 100 -density 200 -colorspace sRGB '/src/pdfs/2023-01-09-proximus.pdf[0]' -flatten /src/output.png
+convert: FailedToExecuteCommand `'gs' -sstdout=%stderr -dQUIET -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT -dMaxBitmap=500000000 -dAlignToPixels=0 -dGridFitTT=2 '-sDEVICE=pngalpha' -dTextAlphaBits=4 -dGraphicsAlphaBits=4 '-r200x200' -dPrinted=false -dFirstPage=1 -dLastPage=1 '-sOutputFile=magick-YMX-n5OYS7EpIgG9fu04gS4I7nGNnCNl%d' '-fmagick-OwWeXniaYxuw2iAhuXsz-k1nZxBrwoWG' '-fmagick-QvORRBCAbGmU4AKh7VoxaEDlubJkI2qk'' (32512) @ error/ghostscript-private.h/ExecuteGhostscriptCommand/74.
+convert: no images defined `/src/output.png' @ error/convert.c/ConvertImageCommand/3342.
+```
+
+When using `convert` on my host machine, but omitting `gs`, is very similar,
+but has an additional `sh: line 1: gs: command not found` line:
+
+```
+$ convert -quality 100 -density 200 -colorspace sRGB 'pdfs/2023-01-09-proximus.pdf[0]' -flatten output.png
+sh: line 1: gs: command not found
+convert: FailedToExecuteCommand `'gs' -sstdout=%stderr -dQUIET -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT -dMaxBitmap=500000000 -dAlignToPixels=0 -dGridFitTT=2 '-sDEVICE=pngalpha' -dTextAlphaBits=4 -dGraphicsAlphaBits=4 '-r200x200' -dPrinted=false -dFirstPage=1 -dLastPage=1 '-sOutputFile=/run/user/1000/magick-_f97AT5-L2DxpZYeSrj-LNLOgB8QW3b8%d' '-f/run/user/1000/magick-arJJP49wUA61JM7BoRTyPPj6kApH5gGZ' '-f/run/user/1000/magick-sLB3aFbLHxrGl-LUdJLCApxv9H6ugSt0'' (32512) @ error/ghostscript-private.h/ExecuteGhostscriptCommand/74.
+convert: no images defined `output.png' @ error/convert.c/ConvertImageCommand/3342.
+```
+
+(Calling `gs` directly in the container does work.)

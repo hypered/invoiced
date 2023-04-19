@@ -13,15 +13,18 @@ import sys
 
 from . import db
 
-TEMPLATES = None
-def load_templates():
-    global TEMPLATES
-    if TEMPLATES is None:
-        TEMPLATES = read_templates('./templates/')
-    return TEMPLATES
+JINJA2_TEMPLATES_DIR = os.environ.get('JINJA2_TEMPLATES_DIR', './jinja2/')
+YAML_TEMPLATES_DIR = os.environ.get('YAML_TEMPLATES_DIR', './templates/')
+
+YAML_TEMPLATES = None
+def load_invoice2data_templates():
+    global YAML_TEMPLATES
+    if YAML_TEMPLATES is None:
+        YAML_TEMPLATES = read_templates(YAML_TEMPLATES_DIR)
+    return YAML_TEMPLATES
 
 def extract_data_from_pdf(pdf_path):
-    templates = load_templates()
+    templates = load_invoice2data_templates()
     result = extract_data(pdf_path, templates=templates)
     return result
 
@@ -86,6 +89,7 @@ def convert_pdf_to_png(pdf_path, out_directory):
             check=True,
         )
     output = proc.stdout
+    print(output)
     print(f'Image generated as {output_path}.')
 
 def generate_hash_from_invoice(pdf_path):
@@ -137,7 +141,7 @@ def insert_directory(directory):
 def generate_html_from_invoice(pdf_path, out_directory):
     result = process_pdf(pdf_path, out_directory)
 
-    template_path = 'jinja2/preview.html'
+    template_path = os.path.join(JINJA2_TEMPLATES_DIR, 'preview.html')
     template_dir, template_file = os.path.split(template_path)
     env = Environment(loader=FileSystemLoader(template_dir))
     template = env.get_template(template_file)

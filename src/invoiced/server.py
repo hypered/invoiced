@@ -6,11 +6,11 @@ from werkzeug.utils import secure_filename
 from . import core
 
 # Set the path for uploaded files and allowed extensions
-UPLOAD_FOLDER = 'uploads'
+UPLOAD_DIR = os.environ.get('UPLOAD_DIR', './uploads/')
 ALLOWED_EXTENSIONS = {'pdf'}
 
-app = Flask(__name__, template_folder='../../jinja2')
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app = Flask(__name__, template_folder=core.JINJA2_TEMPLATES_DIR)
+app.config['UPLOAD_DIR'] = UPLOAD_DIR
 app.secret_key = 'super_secret_key'
 
 def allowed_file(filename):
@@ -62,7 +62,7 @@ def upload_file():
             return redirect(request.url)
 
         filename = secure_filename(file.filename)
-        pdf_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        pdf_path = os.path.join(app.config['UPLOAD_DIR'], filename)
         file.save(pdf_path)
         out_directory = user_generated_directory()
         return process_file(pdf_path, out_directory)
@@ -71,6 +71,6 @@ def upload_file():
         return render_template('index.html')
 
 def start_server():
-    if not os.path.exists(UPLOAD_FOLDER):
-        os.makedirs(UPLOAD_FOLDER)
+    if not os.path.exists(UPLOAD_DIR):
+        os.makedirs(UPLOAD_DIR)
     app.run(debug=True)

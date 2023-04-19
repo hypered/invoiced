@@ -56,15 +56,39 @@ let
       setuptools
     ];
   };
+  invoiced-jinja2-templates = pkgs.stdenv.mkDerivation {
+    name = "jinja2-templates";
+    src = ./jinja2;
+    installPhase = ''
+      mkdir -p $out/
+      cp ./*.html $out/
+    '';
+  };
+  invoiced-invoice2data-templates = pkgs.stdenv.mkDerivation {
+    name = "migrations";
+    src = ./templates;
+    installPhase = ''
+      mkdir -p $out/
+      cp ./*.yml $out/
+    '';
+  };
   invoiced-env = pkgs.buildEnv {
     name = "invoiced-env";
     paths = [
       (pkgs.python39.withPackages (ps: [ ps.gunicorn invoiced ]))
+      pkgs.ghostscript
+      pkgs.imagemagick
+      pkgs.poppler_utils # For pdftotext.
     ];
   };
 in
 {
-  inherit invoiced invoiced-env;
+  inherit
+  invoiced
+  invoiced-jinja2-templates
+  invoiced-invoice2data-templates
+  invoiced-env;
+
   shell = pkgs.mkShell {
     buildInputs = [ invoiced-env ];
   };
