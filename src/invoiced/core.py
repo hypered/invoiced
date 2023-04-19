@@ -1,4 +1,5 @@
 import binascii
+import datetime
 import fnmatch
 from invoice2data import extract_data
 from invoice2data.extract.loader import read_templates
@@ -27,7 +28,41 @@ def load_invoice2data_templates():
 def extract_data_from_pdf(pdf_path):
     templates = load_invoice2data_templates()
     result = extract_data(pdf_path, templates=templates)
+    if result:
+        validate_data(result)
     return result
+
+class ExtractException(Exception):
+    def __init__(self, message):
+        super().__init__(message)
+
+def validate_data(result):
+    def check(field_name, field_type):
+        if field_name not in result:
+            raise ExtractException(f"The field '{field_name}' is missing.")
+        if type(result[field_name]) != field_type:
+            raise ExtractException(f"The field '{field_name}' is not a {field_type.__name__}.")
+    for field_name, field_type in [
+        ('issuer', str),
+        ('date', datetime.datetime),
+        ('amount', float), # TODO Decimal
+        ('invoice_number', str),
+        ]:
+        check(field_name, field_type)
+
+    # Payment information can fail to be extracted.
+    if 'iban' in result:
+        check('iban', str)
+    if 'bic' in result:
+        check('bic', str)
+    if 'reference' in result:
+        check('reference', str)
+        if 'text' in result:
+            raise ExtractException(f"Both fields 'text' and 'reference' are present.")
+    if 'text' in result:
+        check('text', str)
+        if 'reference' in result:
+            raise ExtractException(f"Both fields 'text' and 'reference' are present.")
 
 def make_qrcode_from_data(result):
     qrcode = helpers.make_epc_qr(name=result['issuer'],
@@ -124,16 +159,22 @@ def insert_invoice(pdf_path):
         print(f"{pdf_path} is already present.")
     else:
         print(f"Inserting {pdf_path}...")
-        result = extract_data_from_pdf(pdf_path)
         _, original_filename = os.path.split(pdf_path)
-        db.insert_invoice(
-            original_filename=original_filename,
-            mmh3_hash=mmh3_hash,
-            date=result['date'],
-            invoice_number=result['invoice_number'],
-            amount=result['amount'],
-            paid='no',
-            )
+        result = extract_data_from_pdf(pdf_path)
+        if not result:
+            db.insert_invoice(
+                original_filename=original_filename,
+                mmh3_hash=mmh3_hash,
+                )
+        else:
+            db.insert_invoice(
+                original_filename=original_filename,
+                mmh3_hash=mmh3_hash,
+                date=result['date'],
+                invoice_number=result['invoice_number'],
+                amount=result['amount'],
+                paid='no',
+                )
 
 def insert_directory(directory):
     process_pdfs(directory, insert_invoice)

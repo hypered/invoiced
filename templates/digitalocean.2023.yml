@@ -20,6 +20,9 @@ fields:
   invoice_number:
     parser: regex
     regex: 'Invoice number:\s+(\d+)'
+  paid:
+    parser: static
+    value: 'automatic'
   template:
     parser: static
     value: digitalocean.2023.yml

@@ -14,7 +14,7 @@ fields:
   invoice_number: 'Référence de la facture acquittée :\s+(FR\d{4,})\s+'
   paid:
     parser: static
-    value: True
+    value: 'prepaid'
 options:
   currency: EUR
   date_formats:
