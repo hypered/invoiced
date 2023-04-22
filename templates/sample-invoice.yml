@@ -1,0 +1,33 @@
+issuer: Sample issuer
+comment: |
+  Recognize an example invoice in English.
+keywords:
+  - Invoice
+  - Sample issuer
+fields:
+  date:
+    parser: regex
+    regex: 'Date:\s+(\d{4}-\d{2}-\d{2})'
+    type: date
+  amount:
+    parser: regex
+    regex: 'Amount:\s(\d+\,\d+) €'
+    type: float
+  invoice_number:
+    parser: regex
+    regex: 'Invoice number:\s+(\d+)'
+  iban:
+    parser: regex
+    regex: 'IBAN:\s+([A-Z]{2}\d{2}\s*\d{4}\s*\d{4}\s*\d{4})'
+  bic:
+    parser: regex
+    regex: 'BIC:\s+(XXXXXXXX)'
+  reference:
+    parser: regex
+    regex: 'Reference:\s+(\+\+\+\d{3}/\d{4}/\d{5}\+\+\+)'
+  template:
+    parser: static
+    value: sample-invoice.yml
+options:
+  currency: EUR
+  decimal_separator: ','
